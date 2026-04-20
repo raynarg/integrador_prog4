@@ -1,0 +1,38 @@
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background-color: #f4f6f8 !important; 
+}
+
+.login-page {
+    min-height: 100vh;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+.texto-fcad{
+    color: #001E2D !important;
+}
+
+
+.btn-fcad {
+    background-color: #001E2D;
+    border-color: #001E2D;
+    color: #ffffff; 
+}
+
+
+.btn-fcad:hover {
+    background-color: #002b40; 
+    border-color: #002b40;
+    color: #ffffff;
+}
