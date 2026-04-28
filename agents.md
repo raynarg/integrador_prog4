@@ -25,7 +25,27 @@ El proyecto respeta una separación estricta entre cliente y servidor:
 ---
 
 ## Consigna Oficial / PDF del Trabajo Práctico
-[PEGAR AQUÍ EL TEXTO DEL PDF O LAS CONSIGNAS EXACTAS DEL PROFESOR]
+Es necesario contar con una aplicación web disponible en la intranet de la institución que le
+permita al personal afectado llevar a cabo las siguientes tareas:
+• Login de usuario o pantalla de inicio de sesión.
+• Panel de resumen o dashboard (Totales de cursos, estudiantes y links rápidos a cursos
+activos).
+• Respecto de los estudiantes:
+◦ BREAD completo.
+◦ Incluir distintos criterios de búsqueda.
+◦ Tener en cuenta paginación de resultados.
+• En referencia a cursos:
+◦ BREAD completo.
+◦ Incluir distintos criterios de búsqueda.
+◦ Tener en cuenta paginación de resultados
+◦ Generación / Impresión de Diplomas.
+• En relación a Inscripciones:
+◦ BREAD exceptuando NO aplica edición.
+◦ Tener en cuenta paginación de resultados.
+◦ Incluir controles que no permitan la inscripción adicional de estudiantes si se supera el
+cupo establecido por la columna inscriptos_max o la inscripción no está habilitada.
+◦ No permitir inscripciones duplicadas.
+◦ Generación / Impresión de diploma individual
 
 ---
 
