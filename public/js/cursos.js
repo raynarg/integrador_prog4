@@ -1,7 +1,7 @@
 // Esqueleto de lógica para `cursos.html`.
 // Contiene constantes y hooks DOM mínimos. Completa las funciones de render y eventos.
 
-const CURSO_ESTADOS = {
+window.CURSO_ESTADOS = window.CURSO_ESTADOS || {
   1: 'BORRADOR',
   2: 'INSCRIPCIÓN ABIERTA',
   3: 'INSCRIPCIÓN CERRADA',
@@ -17,17 +17,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   } catch (err) {
     console.error('Error cargando cursos:', err);
   }
+
+  const tablaBody = document.getElementById('tablaCursosBody');
+  console.log(tablaBody);
+  if (tablaBody) {
+    tablaBody.innerHTML = '';
+  }
 });
 
-// Placeholders para que completes:
-function renderTable(cursos) {
-  // 1) Limpiar #tablaCursosBody
-  // 2) Iterar cursos y crear filas usando campos: id_curso, nombre, inscriptos_max, id_curso_estado
-}
 
-function openDetalle(id) {
-  // cargar curso por id y rellenar modal (#detalleNombre, #detalleDescripcion, etc.)
-}
-
-window.renderTable = renderTable;
-window.openDetalle = openDetalle;
