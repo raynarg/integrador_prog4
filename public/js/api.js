@@ -1,12 +1,14 @@
 // Esqueleto de API wrapper para frontend.
 // Usa `API.useMock = true` para cargar `public/data/mock-cursos.json`.
 
-const API = {
+window.API = window.API || {
   useMock: true,
 
   async getAll() {
     if (this.useMock) {
-      return fetch('/data/mock-cursos.json').then(r => r.json());
+      const res = await fetch('./data/mock-cursos.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status} fetching mock data`);
+      return res.json();
     }
     return fetch('/api/cursos').then(r => r.json());
   },
@@ -24,5 +26,3 @@ const API = {
   async update(id, obj) { return Promise.resolve(null); },
   async remove(id) { return Promise.resolve(null); }
 };
-
-window.API = API;
