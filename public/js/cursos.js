@@ -18,13 +18,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <td>${curso.nombre}</td>
                 <td>${curso.inscriptos_max}</td>
                 <td>${curso.id_curso_estado}</td>
-                <td class="text-end">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Acciones curso">
-                        <button type="button" class="btn btn-outline-success" title="Generar diploma">Diploma</button>
-                        <button type="button" class="btn btn-outline-secondary" title="Ver">Ver</button>
-                        <button type="button" class="btn btn-outline-secondary" title="Editar">Editar</button>
-                        <button type="button" class="btn btn-outline-danger" title="Eliminar">Eliminar</button>
-                    </div>
+                <td>
+                    <!--Asi añado los botones con icono-->
+                    <button
+                        class="btn btn-sm btn-info"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalDetalle"
+                        title="Ver Detalle"
+                    >
+                        <i class="bi bi-eye"></i>
+                    </button>
                 </td>
             `;
             tabla.appendChild(fila);
