@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (modalDetalleElement) {
         //show.bs.modal es un evento que se dispara cuando alguien llama el modal (dialog).
         modalDetalleElement.addEventListener('show.bs.modal', event => {
+            if (!event.relatedTarget) return;
             //esto es el elemento que abrio el modal, en este caso fue el boton -> data-bs-target="#modalDetalle"
             const boton = event.relatedTarget;
             //optional chaining -> ?. -> evita que la pagina se rompa por si no hay bootn, cursoId va a contener el valor de atributo data-id de ese boton.
