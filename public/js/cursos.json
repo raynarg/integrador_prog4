@@ -43,19 +43,5 @@
 		"id_curso_estado": 1,
 		"id_usuario_modificacion": 5,
 		"fecha_hora_modificacion": "2026-03-30T09:30:00"
-	},
-	{
-		"id_curso": 1,
-		"nombre": "Programación Web con React",
-		"descripcion": "Desarrollo de aplicaciones web modernas utilizando JavaScript, React y consumo de APIs REST.",
-		"fecha_inicio": "2026-04-20",
-		"cantidad_horas": 60,
-		"inscriptos_max": 30,
-		"id_curso_estado": 1,
-		"id_usuario_modificacion": 2,
-		"fecha_hora_modificacion": "2026-08-17T09:40:00"
 	}
-	
-	
-	
 ]
