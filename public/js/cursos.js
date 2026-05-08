@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
     let datos = [];
+    // Copia auxiliar para manejar búsquedas y filtros
+    let datosFiltrados = [];
     const estadoTexto = {
-        1: 'Borrador',
-        2: 'Inscripción Abierta',
-        3: 'Inscripción Cerrada',
+        1: 'Inscripción Abierta',
+        2: 'Inscripción Cerrada',
+        3: 'Borrador'
     };
 
     // 2. Variables de Paginación
@@ -19,10 +21,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 3. Carga Inicial 
     try {
-        /* Vieja forma de traer los cursos: const respuesta = await fetch(`js/cursos.json?v=${new Date().getTime()}`);*/
-        const respuesta = await fetch('/api/cursos')
+        const respuesta = await fetch(`js/cursos.json?v=${new Date().getTime()}`);
         datos = await respuesta.json();
-        
+        datosFiltrados = [...datos];
         actualizarCalculosPaginacion();
         renderizarTablaDeCursos();
     } catch (error) {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // ==========================================
 
     function actualizarCalculosPaginacion() {
-        totalPages = Math.ceil(datos.length / itemsPerPage);
+        totalPages = Math.ceil(datosFiltrados.length / itemsPerPage);
         if (totalPages === 0) totalPages = 1; 
         if (currentPage > totalPages) currentPage = totalPages; 
     }
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        const cursosEnEstaPagina = datos.slice(startIndex, endIndex);
+        const cursosEnEstaPagina = datosFiltrados.slice(startIndex, endIndex);
 
         cursosEnEstaPagina.forEach(curso => {
             const fila = document.createElement("tr");
@@ -85,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     function actualizarControlesPaginacion() {
         if (paginacionInfo) {
-            paginacionInfo.textContent = `Mostrando página ${currentPage} de ${totalPages} | Total: ${datos.length} cursos`;
+            paginacionInfo.textContent = `Mostrando página ${currentPage} de ${totalPages} | Total: ${datosFiltrados.length} cursos`;
         }
 
         if (btnAnterior) btnAnterior.disabled = currentPage === 1;
@@ -125,6 +126,27 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     }
+
+    // ==========================================
+// BÚSQUEDA DE CURSOS
+// ==========================================
+const inputBuscar = document.getElementById("buscarCurso");
+
+if (inputBuscar) {
+    inputBuscar.addEventListener("input", (e) => {
+        const texto = e.target.value.toLowerCase().trim();
+
+        datosFiltrados = datos.filter(curso =>
+            curso.nombre.toLowerCase().includes(texto) ||
+            curso.id_curso.toString().includes(texto)
+        );
+
+        currentPage = 1;
+
+        actualizarCalculosPaginacion();
+        renderizarTablaDeCursos();
+    });
+}
 
     // ==========================================
     // MÓDULO: CREAR CURSO
