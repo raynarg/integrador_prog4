@@ -138,7 +138,8 @@ if (inputBuscar) {
 
         datosFiltrados = datos.filter(curso =>
             curso.nombre.toLowerCase().includes(texto) ||
-            curso.id_curso.toString().includes(texto)
+            curso.id_curso.toString().includes(texto) ||
+            curso.descripcion?.toLowerCase().includes(texto)
         );
 
         currentPage = 1;
