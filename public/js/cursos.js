@@ -363,50 +363,36 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("editarEstado").value = curso.estado;
     });
 
-    document.getElementById("btnGuardarCambios").addEventListener("click", () => {
+    document.getElementById("btnGuardarCambios").addEventListener("click", async () => {
         if (!cursoEditando) return;
 
-        const nombre = document.getElementById("editarNombre").value.trim();
-        const descripcion = document.getElementById("editarDescripcion").value.trim();
-        const horas = Number(document.getElementById("editarHoras").value);
-        const max = Number(document.getElementById("editarMax").value);
+        const cursoActualizado = {
+            nombre: document.getElementById("editarNombre").value.trim(),
+            descripcion: document.getElementById("editarDescripcion").value.trim(),
+            fecha_inicio: document.getElementById("editarFechaInicio").value,
+            cantidad_horas: Number(document.getElementById("editarHoras").value),
+            inscriptos_max: Number(document.getElementById("editarMax").value),
+            id_curso_estado: Number(document.getElementById("editarEstado").value)
+        };
 
-        if (!nombre) {
-            mostrarError("El nombre del curso no puede estar vacío.");
-            return;
-        }
-        if (descripcion.length < 5) {
-            mostrarError("La descripción debe tener al menos 5 caracteres.");
-            return;
-        }
-        if (isNaN(horas) || horas <= 0) {
-            mostrarError("La cantidad de horas debe ser un número mayor a 0.");
-            return;
-        }
-        if (horas > 500) {
-            mostrarError("La cantidad de horas es demasiado alta.");
-            return;
-        }
-        if (isNaN(max) || max <= 0) {
-            mostrarError("Los inscriptos máximos deben ser mayor a 0.");
-            return;
-        }
-        if (max > 1000) {
-            mostrarError("Demasiados inscriptos máximos.");
-            return;
-        }
+        try {
+            const response = await fetch(`/api/v1/cursos/${cursoEditando.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(cursoActualizado)
+            });
 
-        cursoEditando.nombre = nombre;
-        cursoEditando.descripcion = descripcion;
-        cursoEditando.cantidadHoras = horas;
-        cursoEditando.inscriptosMax = max;
-        cursoEditando.estado = Number(document.getElementById("editarEstado").value);
-        cursoEditando.fechaInicio = document.getElementById("editarFechaInicio").value;
+            const resultado = await response.json();
 
-        bootstrap.Modal.getInstance(document.getElementById("modalEditar")).hide();
-
-        // Aplicamos el filtro para actualizar la tabla con el dato ya editado
-        aplicarFiltros();
+            if (response.ok) {
+                bootstrap.Modal.getInstance(document.getElementById("modalEditar")).hide();
+                await cargarCursos();
+            } else {
+                alert("Error al guardar: " + (resultado.error || "Desconocido"));
+            }
+        } catch (error) {
+            console.error("Error en el fetch:", error);
+        }
     });
 
     // ==========================================
