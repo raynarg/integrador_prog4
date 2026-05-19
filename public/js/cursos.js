@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
 
         try {
+            setCargando("btnConfirmarCrear", "spinnerCrear", true, "Crear curso");
             const response = await fetch('/api/v1/cursos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -212,11 +213,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // Mostrar el error real del backend usando el modal
                 mostrarError(resultado.error || "Desconocido");
             }
-            } catch (error) {
+        } catch (error) {
             console.error("Error en el fetch:", error);
             mostrarError("Ocurrió un error inesperado al intentar crear el curso.");
-            }
-            });
+        } finally {
+            setCargando("btnConfirmarCrear", "spinnerCrear", false, "Crear curso");
+        }
+    });
     // parte nueva del diploma
 
     let estudiantes = [];
@@ -347,6 +350,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!cursoIdAEliminar) return;
         
         try {
+            setCargando("btnConfirmarEliminar", "spinnerEliminar", true, "Eliminar");
             const respuesta = await fetch(`/api/v1/cursos/${cursoIdAEliminar}`, {
                 method: 'DELETE'
             });
@@ -370,6 +374,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         } catch (error) {
             console.error("Error al eliminar curso:", error);
             mostrarError("Ocurrió un error de red al intentar eliminar el curso.");
+        } finally {
+            setCargando("btnConfirmarEliminar", "spinnerEliminar", false, "Eliminar");
         }
     });
 
@@ -407,6 +413,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
 
         try {
+            setCargando("btnGuardarCambios", "spinnerEditar", true, "Guardar cambios");
             const response = await fetch(`/api/v1/cursos/${cursoEditando.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -424,12 +431,30 @@ document.addEventListener("DOMContentLoaded", async function () {
         } catch (error) {
             console.error("Error en el fetch:", error);
             mostrarError("Ocurrió un error inesperado al intentar actualizar el curso.");
+        } finally {
+            setCargando("btnGuardarCambios", "spinnerEditar", false, "Guardar cambios");
         }
     });
 
     // ==========================================
     // UTILS
     // ==========================================
+    function setCargando(idBoton, idSpinner, cargando, textoOriginal) {
+        const boton = document.getElementById(idBoton);
+        const spinner = document.getElementById(idSpinner);
+        const texto = boton.querySelector('span[id^="texto"]');
+
+        if (cargando) {
+            boton.disabled = true;
+            spinner.classList.remove("d-none");
+            if (texto) texto.textContent = " Procesando...";
+        } else {
+            boton.disabled = false;
+            spinner.classList.add("d-none");
+            if (texto) texto.textContent = textoOriginal;
+        }
+    }
+
     function mostrarError(mensaje) {
         const modalesParaCerrar = ['modalEditar', 'modalCrear', 'modalEliminar'];
         modalesParaCerrar.forEach(id => {
