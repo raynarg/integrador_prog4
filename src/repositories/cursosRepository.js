@@ -14,8 +14,16 @@ export async function findAll({
     let where = `WHERE ce.es_activo = 1`;
 
     if (nombre) {
-        params.push(`%${nombre}%`);
-        where += ` AND c.nombre ILIKE $${params.length}`;
+        // Si el término de búsqueda es numérico, buscamos por ID o por nombre
+        const idSearch = parseInt(nombre);
+        if (!isNaN(idSearch)) {
+            params.push(idSearch);
+            params.push(`%${nombre}%`);
+            where += ` AND (c.id_curso = $${params.length - 1} OR c.nombre ILIKE $${params.length})`;
+        } else {
+            params.push(`%${nombre}%`);
+            where += ` AND c.nombre ILIKE $${params.length}`;
+        }
     }
 
     if (id_curso_estado) {
