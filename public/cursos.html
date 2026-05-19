@@ -133,7 +133,8 @@
                     Cancelar
                   </button>
                   <button type="submit" form="formCrearCurso" id="btnConfirmarCrear" class="btn btn-primary">
-                    Crear curso
+                    <span id="spinnerCrear" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    <span id="textoCrear">Crear curso</span>
                   </button>
                 </div>
               </div>
@@ -144,10 +145,10 @@
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content border-0 shadow">
                 <div class="modal-body text-center p-4">
-                  <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                  <i class="bi bi-check-circle-fill text-primary" style="font-size: 3rem;"></i>
                   <h3 class="fw-bold mt-3">¡Excelente!</h3>
                   <p class="text-secondary" id="mensajeExito">El curso se ha creado correctamente.</p>
-                  <button type="button" class="btn btn-dark w-100" data-bs-dismiss="modal" id="btnCerrarExito">
+                  <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal" id="btnCerrarExito">
                     Continuar
                   </button>
                 </div>
@@ -267,13 +268,16 @@
 
   <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-content shadow border-0">
+        <div class="modal-header bg-primary text-white border-0">
           <div>
-            <h5 class="modal-title" id="modalDetalleLabel">Detalle del curso</h5>
-            <p id="detalleSubtitulo" class="text-secondary mb-0 small"></p>
+            <h5 class="modal-title" id="modalDetalleLabel">
+              <i class="bi bi-info-circle me-2"></i>
+              Detalle del curso
+            </h5>
+            <p id="detalleSubtitulo" class="text-white-50 mb-0 small"></p>
           </div>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
@@ -362,7 +366,8 @@
           Cancelar
         </button>
         <button id="btnConfirmarEliminar" class="btn btn-primary">
-          Eliminar
+          <span id="spinnerEliminar" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          <span id="textoEliminar">Eliminar</span>
         </button>
       </div>
     </div>
@@ -423,7 +428,8 @@
           Cancelar
         </button>
         <button id="btnGuardarCambios" class="btn btn-primary">
-          Guardar cambios
+          <span id="spinnerEditar" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          <span id="textoEditar">Guardar cambios</span>
         </button>
         </div>
 
