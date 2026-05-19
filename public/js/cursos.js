@@ -1,3 +1,6 @@
+import html2canvas from "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js";
+import { jsPDF } from "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm";
+
 document.addEventListener("DOMContentLoaded", async function () {
     let datos = [];
     let datosFiltrados = [];
@@ -260,6 +263,34 @@ document.addEventListener("DOMContentLoaded", async function () {
         document.getElementById("diplomaNombreEstudiante").textContent = 
             `${estudiante.nombres} ${estudiante.apellido}`;
     });
+
+
+    // GENERADOR DE PDF
+    document.getElementById("btnGenerarPDF").addEventListener("click", async () => {
+
+    // Verificar que haya un estudiante seleccionado
+    const nombreEstudiante = document.getElementById("diplomaNombreEstudiante").textContent;
+    if (nombreEstudiante === "-" || nombreEstudiante === "") {
+        alert("Seleccioná un estudiante antes de generar el PDF.");
+        return;
+    }
+
+    // Capturar la vista previa como imagen
+    const elemento = document.getElementById("vistaPreviaDiploma");
+    const canvas = await html2canvas(elemento, { scale: 2 });
+    const imagen = canvas.toDataURL("image/png");
+
+    // Crear el PDF en horizontal (landscape) tamaño A4
+    const doc = new jsPDF("landscape", "mm", "a4");
+    const ancho = doc.internal.pageSize.getWidth();
+    const alto = doc.internal.pageSize.getHeight();
+
+    // Agregar la imagen al PDF ocupando toda la página
+    doc.addImage(imagen, "PNG", 0, 0, ancho, alto);
+
+    // Descargar con el nombre del estudiante
+    doc.save(`diploma-${nombreEstudiante.replace(/ /g, "-")}.pdf`);
+});
 
     // ==========================================
     // MÓDULO: VER DETALLE
