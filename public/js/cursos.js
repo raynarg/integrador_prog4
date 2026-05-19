@@ -9,15 +9,59 @@ document.addEventListener("DOMContentLoaded", async function () {
         3: 'Inscripción Cerrada'
     };
 
+    //variables para paginación
+    let paginaActual = 1;
+    let totalPaginas = 1;
+
     // 1. Carga Inicial 
-    try {
-        const respuesta = await fetch('/api/v1/cursos?page=1&limit=10');
-        const json = await respuesta.json();
-        datos = json.data;
-        datosFiltrados = [...datos];
-        renderizarTablaDeCursos();
-    } catch (error) {
-        console.error("Error en carga de cursos:", error);
+    async function cargarCursos() {
+        try {
+            console.log("Cargando página:", paginaActual);
+            const respuesta = await fetch(`/api/v1/cursos?page=${paginaActual}&limit=10`);
+            const json = await respuesta.json();
+            
+            datos = json.data;
+            datosFiltrados = [...datos];
+            totalPaginas = json.pagination.totalPages || 1; 
+            
+            renderizarTablaDeCursos();
+            
+            // Actualizar texto de paginación
+            const infoPaginacion = document.getElementById("infoPaginacion");
+            if (infoPaginacion) {
+                infoPaginacion.textContent = `Página ${paginaActual} de ${totalPaginas}`;
+            }
+
+            // Deshabilitar botones si no hay más páginas
+            if (btnAnterior) btnAnterior.disabled = (paginaActual <= 1);
+            if (btnSiguiente) btnSiguiente.disabled = (paginaActual >= totalPaginas);
+            
+        } catch (error) {
+            console.error("Error en carga de cursos:", error);
+        }
+    }
+    
+    const btnSiguiente = document.getElementById("btnSiguiente");
+    const btnAnterior = document.getElementById("btnAnterior");
+
+    cargarCursos();
+
+    if (btnSiguiente) {
+        btnSiguiente.addEventListener("click", () => {
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                cargarCursos();
+            }
+        });
+    }
+
+    if (btnAnterior) {
+        btnAnterior.addEventListener("click", () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                cargarCursos();
+            }
+        });
     }
 
     // ==========================================
