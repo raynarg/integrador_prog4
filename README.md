@@ -5,7 +5,7 @@ Proyecto final integrador de la materia Programación 4 de la UNER FCAD. Aplicac
 > [!TIP]
 > **Documentación Interactiva:** Puedes obtener información detallada y clara sobre este repositorio consultando su [DeepWiki](https://deepwiki.com/raynarg/integrador_prog4).
 
-## 🚀 Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - **Backend:** Node.js, Express.js (v5.x)
 - **Base de Datos:** PostgreSQL
