@@ -11,12 +11,12 @@ Proyecto final integrador de la materia Programación 4 de la UNER FCAD. Aplicac
 - **Seguridad:** Helmet, CORS, Express-validator
 - **Frontend:** HTML5, CSS3 (Bootstrap), JavaScript Vanilla
 
-## 🛠️ Requisitos previos
+## Requisitos previos
 
 - [Node.js](https://nodejs.org/) (versión 18.11.0 o superior para soporte de `--watch`)
 - [PostgreSQL](https://www.postgresql.org/) instalado y en ejecución
 
-## 📦 Instalación
+## Instalación
 
 1. Clona el repositorio:
    ```bash
@@ -35,7 +35,7 @@ Proyecto final integrador de la materia Programación 4 de la UNER FCAD. Aplicac
    cp .env.example .env
    ```
 
-##  Ejecución
+## Ejecución
 
 Para iniciar el servidor en producción:
 ```bash
@@ -49,7 +49,17 @@ npm run dev
 
 El servidor estará disponible en `http://localhost:3000`.
 
-## 📂 Estructura de Carpetas
+## Documentación de la API
+
+La API cuenta con documentación interactiva generada con Swagger UI.
+
+- **URL de acceso:** `http://localhost:3000/api-docs`
+- **Generación de esquema estático:** Para generar el archivo `swagger.json` actualizado, ejecute:
+  ```bash
+  npm run swagger-gen
+  ```
+
+## Estructura de Carpetas
 
 El proyecto sigue una estructura modular separando claramente el frontend y el backend:
 

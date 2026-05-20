@@ -16,6 +16,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
 import cursosRouter from './routes/cursosRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -52,6 +54,9 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // ── Rutas de la API (versionadas) ────────────────────────────
 app.use('/api/v1/cursos', cursosRouter);
+
+// ── Documentación de la API ──────────────────────────────────
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ── Ruta temporal de estudiantes ─────────────────────────────
 app.get('/api/estudiantes', async (req, res) =>{
