@@ -122,3 +122,15 @@ export async function deleteById(id, userId) {
     );
     return rowCount > 0;
 }
+
+export async function deleteByEstudianteId(id_estudiante, userId) {
+    const { rowCount } = await pool.query(
+        `UPDATE inscripciones
+         SET id_inscripcion_estado = 2,
+             id_usuario_modificacion = $2,
+             fecha_hora_modificacion = NOW()
+         WHERE id_estudiante = $1 AND id_inscripcion_estado = 1`,
+        [id_estudiante, userId]
+    );
+    return rowCount;
+}

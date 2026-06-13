@@ -159,3 +159,12 @@ body.page-body {
   color: white;
   font-weight: bold;
 }
+
+/* Persist the sidebar and header during view transitions */
+.sidebar-panel {
+  view-transition-name: sidebar;
+}
+
+.navbar-brandbar {
+  view-transition-name: topbar;
+}
