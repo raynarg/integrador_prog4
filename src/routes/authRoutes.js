@@ -12,23 +12,12 @@
 // ============================================================
 
 import { Router } from 'express';
-import { body } from 'express-validator'; // para definir reglas de validación
-import { validate } from '../middlewares/validateBody.js'; // corta el pipeline si hay errores
+import { validate } from '../middlewares/validateBody.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
+import { validarLogin, validarCambioContrasenia } from '../middlewares/validators.js';
 import * as ctrl from '../controllers/authController.js';
 
 const router = Router();
-
-// Reglas de validación para el body del login
-const validarLogin = [
-    body('nombre_usuario')
-        .trim()                      // quitar espacios al inicio y al final
-        .notEmpty()                  // no puede estar vacío
-        .withMessage('El nombre de usuario es requerido'),
-
-    body('contrasenia')
-        .notEmpty()                  // no puede estar vacío
-        .withMessage('La contraseña es requerida')
-];
 
 /**
  * @swagger
@@ -58,6 +47,8 @@ const validarLogin = [
  *       400:
  *         description: Datos de entrada inválidos
  */
-router.post('/login', validarLogin, validate, ctrl.login); // POST /api/v1/auth/login
+router.post('/login', validarLogin, validate, ctrl.login);
+
+router.put('/password', authMiddleware, validarCambioContrasenia, validate, ctrl.cambiarContrasenia);
 
 export default router;

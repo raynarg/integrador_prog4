@@ -63,3 +63,22 @@ export async function login(nombre_usuario, contrasenia) {
     // 5. Retornar el token y los datos del usuario (sin contraseña)
     return { token, usuario: payload };
 }
+
+export async function cambiarContrasenia(userId, contraseniaActual, contraseniaNueva) {
+    const usuario = await usuariosRepository.findById(userId);
+    if (!usuario) {
+        const error = new Error('Usuario no encontrado');
+        error.statusCode = 404;
+        throw error;
+    }
+
+    const passwordValida = await bcrypt.compare(contraseniaActual, usuario.contrasenia);
+    if (!passwordValida) {
+        const error = new Error('La contraseña actual es incorrecta');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const hash = await bcrypt.hash(contraseniaNueva, 10);
+    await usuariosRepository.updatePassword(userId, hash);
+}

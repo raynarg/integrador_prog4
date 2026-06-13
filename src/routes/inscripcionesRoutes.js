@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { body, param } from 'express-validator';
 import { validate } from '../middlewares/validateBody.js';
+import { validarId, validarInscripcion } from '../middlewares/validators.js';
 import {
     getInscripciones,
     getInscripcionById,
@@ -10,16 +10,6 @@ import {
 
 const router = Router();
 
-// Reglas de validación
-const validarId = [
-    param('id').isInt({ min: 1 }).withMessage('El ID debe ser un número entero positivo')
-];
-
-const validarInscripcion = [
-    body('id_estudiante').isInt({ min: 1 }).withMessage('El ID del estudiante es requerido y debe ser entero'),
-    body('id_curso').isInt({ min: 1 }).withMessage('El ID del curso es requerido y debe ser entero'),
-    body('fecha_inscripcion').optional().isISO8601().withMessage('La fecha debe tener formato ISO8601')
-];
 
 // BROWSE - Listar inscripciones (con paginación y filtros)
 router.get('/', getInscripciones);

@@ -39,7 +39,9 @@
           </div>
         </div>
 
-        <div class="mt-auto pt-3 d-none d-lg-flex align-items-center gap-2">
+        <hr class="border-secondary opacity-25 d-none d-lg-block mt-auto mb-0">
+        <a href="cambiar-contrasenia.html" class="nav-link sidebar-link text-white-50 d-none d-lg-block py-2">Cambiar contraseña</a>
+        <div class="pt-3 d-none d-lg-flex align-items-center gap-2">
           <div id="sidebarUserInitial" class="rounded-circle brand-circle d-inline-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;">N</div>
           <div>
             <div id="sidebarUserNombre" class="fw-semibold">Usuario</div>
@@ -238,9 +240,15 @@
                       <div id="diplomaFecha" class="fw-semibold">-</div>
                     </div>
                   </div>
-                  <div class="text-secondary small">
-                    <div class="mx-auto border-top mb-2" style="width:140px;"></div>
-                    Autoridad competente
+                  <div class="d-flex justify-content-center align-items-end gap-4 mt-2">
+                    <div class="text-secondary small text-center">
+                      <div class="mx-auto border-top mb-2" style="width:140px;"></div>
+                      Autoridad competente
+                    </div>
+                    <div class="text-center">
+                      <canvas id="diplomaQR"></canvas>
+                      <div class="text-muted" style="font-size:0.55rem;">Verificar autenticidad</div>
+                    </div>
                   </div>
                 </div>
                 <div class="brand-strip-reverse" style="height:7px;"></div>
