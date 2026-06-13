@@ -1,5 +1,6 @@
 import html2canvas from "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js";
 import { jsPDF } from "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm";
+import QRCode from "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/+esm";
 import { setupPaginaProtegida, apiFetch } from './auth.js';
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -358,6 +359,19 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('diplomaNombreCurso').textContent = cursoNombre;
             document.getElementById('diplomaHoras').textContent = cursoHoras;
             document.getElementById('diplomaFecha').textContent = cursoFecha;
+
+            // Generar QR con los datos de la inscripción para verificar autenticidad
+            const canvas = document.getElementById('diplomaQR');
+            if (canvas) {
+                const qrTexto = [
+                    "FCAD UNER - Sistema de Inscripciones",
+                    `Estudiante: ${estudianteNombre}`,
+                    `Curso: ${cursoNombre}`,
+                    `Duración: ${cursoHoras}`,
+                    `Fecha de inicio: ${cursoFecha}`
+                ].join('\n');
+                QRCode.toCanvas(canvas, qrTexto, { width: 80, margin: 1 });
+            }
         });
     }
 

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cambiar Contraseña</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="css/admin-layout.css" rel="stylesheet">
+  <script src="js/cambiar-contrasenia.js" type="module" defer></script>
+</head>
+<body class="page-body">
+  <div class="container-fluid page-shell">
+    <div class="row min-vh-100">
+      <aside class="col-12 col-lg-2 sidebar-panel text-white d-flex flex-lg-column p-3 gap-3">
+        <div class="d-flex align-items-center justify-content-between d-lg-block w-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="sidebar-brand text-white fw-bold rounded-3 d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;">FC</div>
+            <div class="fw-semibold d-lg-none">FCAD UNER</div>
+          </div>
+          <button class="btn btn-outline-light btn-sm d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="collapse d-lg-block w-100" id="sidebarNav">
+          <div class="nav nav-pills flex-column gap-1 mt-2">
+            <a href="dashboard.html" class="nav-link sidebar-link text-white-50">Dashboard</a>
+            <a href="estudiantes.html" class="nav-link sidebar-link text-white-50">Estudiantes</a>
+            <a href="cursos.html" class="nav-link sidebar-link text-white-50">Cursos</a>
+            <a href="inscripciones.html" class="nav-link sidebar-link text-white-50">Inscripciones</a>
+          </div>
+        </div>
+
+        <hr class="border-secondary opacity-25 d-none d-lg-block mt-auto mb-0">
+        <a href="cambiar-contrasenia.html" class="nav-link sidebar-link active d-none d-lg-block py-2">Cambiar contraseña</a>
+        <div class="pt-3 d-none d-lg-flex align-items-center gap-2">
+          <div id="sidebarUserInitial" class="rounded-circle brand-circle d-inline-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;">N</div>
+          <div>
+            <div id="sidebarUserNombre" class="fw-semibold">Usuario</div>
+            <small class="text-white-50">Administrador</small>
+          </div>
+        </div>
+      </aside>
+
+      <main class="col-12 col-lg-10 px-0">
+        <nav class="navbar navbar-expand bg-white border-bottom sticky-top navbar-brandbar">
+          <div class="container-fluid px-3 px-lg-4">
+            <span class="navbar-brand mb-0 h1 fs-6 fw-semibold">Sistema de Inscripciones</span>
+            <div class="ms-auto d-flex align-items-center gap-3">
+              <a id="btnLogout" href="index.html" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
+            </div>
+          </div>
+        </nav>
+
+        <div class="p-3 p-lg-4">
+          <div class="mb-4">
+            <h2 class="h4 fw-bold mb-1">Cambiar contraseña</h2>
+            <p class="text-secondary mb-0">Actualizá la contraseña de tu cuenta.</p>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-5">
+              <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                  <div id="alertExito" class="alert alert-success d-none" role="alert">
+                    Contraseña actualizada correctamente.
+                  </div>
+                  <div id="alertError" class="alert alert-danger d-none" role="alert"></div>
+
+                  <form id="formCambiarContrasenia" novalidate>
+                    <div class="mb-3">
+                      <label for="contraseniaActual" class="form-label fw-medium">Contraseña actual</label>
+                      <input type="password" id="contraseniaActual" class="form-control" required autocomplete="current-password">
+                    </div>
+                    <div class="mb-3">
+                      <label for="contraseniaNueva" class="form-label fw-medium">Nueva contraseña</label>
+                      <input type="password" id="contraseniaNueva" class="form-control" required autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="mb-4">
+                      <label for="confirmarContrasenia" class="form-label fw-medium">Confirmar nueva contraseña</label>
+                      <input type="password" id="confirmarContrasenia" class="form-control" required autocomplete="new-password">
+                    </div>
+                    <div class="d-grid">
+                      <button type="submit" id="btnGuardar" class="btn btn-brand">Guardar cambios</button>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

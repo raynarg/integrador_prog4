@@ -109,14 +109,16 @@ export async function create({ id_estudiante, id_curso, fecha_inscripcion, id_us
     return rows[0];
 }
 
-export async function deleteById(id) {
-    // Realizamos un borrado físico, o un borrado lógico actualizando el estado.
-    // Usaremos borrado físico directo para simplificar el BREAD según lo pedido, 
-    // pero actualizamos fecha_hora_modificacion si fuera lógico.
-    // Aquí hacemos un DELETE crudo para dar de baja la inscripción completamente.
+export async function deleteById(id, userId) {
+    // Soft delete: mueve la inscripción al estado 2 (es_activo = 0) en lugar de borrar la fila.
+    // Así se conserva el historial y se cumple el requerimiento de no usar borrados físicos.
     const { rowCount } = await pool.query(
-        `DELETE FROM inscripciones WHERE id_inscripcion = $1`,
-        [id]
+        `UPDATE inscripciones
+         SET id_inscripcion_estado = 2,
+             id_usuario_modificacion = $2,
+             fecha_hora_modificacion = NOW()
+         WHERE id_inscripcion = $1`,
+        [id, userId]
     );
     return rowCount > 0;
 }

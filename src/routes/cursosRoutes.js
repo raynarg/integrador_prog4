@@ -11,8 +11,8 @@
 // ============================================================
 
 import { Router } from 'express';
-import { body, param } from 'express-validator';
 import { validate } from '../middlewares/validateBody.js';
+import { validarId, validarCurso } from '../middlewares/validators.js';
 import * as ctrl from '../controllers/cursosController.js';
 
 const router = Router();
@@ -72,21 +72,6 @@ const router = Router();
  *   name: Cursos
  *   description: API para la gestión de cursos
  */
-
-// Reglas para los endpoints que reciben un :id en la URL
-const validarId = [
-    param('id').isInt({ min: 1 }),  // el ID debe ser un entero positivo
-];
-
-// Reglas para el body en creación y edición de cursos
-const validarCurso = [
-    body('nombre').trim().notEmpty().isLength({ max: 200 }),    // requerido, máximo 200 caracteres
-    body('descripcion').trim().notEmpty(),                      // requerido
-    body('fecha_inicio').isDate(),                              // formato de fecha válido (YYYY-MM-DD)
-    body('cantidad_horas').isInt({ min: 1, max: 500 }),         // entre 1 y 500 horas
-    body('inscriptos_max').isInt({ min: 1 }),                   // al menos 1 inscripto permitido
-    body('id_curso_estado').isInt({ min: 1, max: 3 }),          // estados válidos: 1 (Borrador), 2 (Abierto), 3 (Cerrado)
-];
 
 /**
  * @swagger

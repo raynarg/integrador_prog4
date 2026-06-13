@@ -1,6 +1,6 @@
 import html2canvas from "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js";
 import { jsPDF } from "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm";
-// Importar las funciones de autenticación del módulo compartido
+import QRCode from "https://cdn.jsdelivr.net/npm/qrcode@1.5.3/+esm";
 import { setupPaginaProtegida, apiFetch } from './auth.js';
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -254,6 +254,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     cargarEstudiantesParaDiploma();
 
     const modalDiplomaElement = document.getElementById("modalDiploma");
+    let cursoDiploma = null;
+
+    function generarQRDiploma(nombreEstudiante, curso) {
+        const canvas = document.getElementById("diplomaQR");
+        if (!canvas) return;
+        const texto = [
+            "FCAD UNER - Sistema de Inscripciones",
+            `Estudiante: ${nombreEstudiante}`,
+            `Curso: ${curso?.nombre ?? '-'}`,
+            `Duración: ${curso?.cantidadHoras ?? '-'} horas`,
+            `Fecha de inicio: ${curso ? new Date(curso.fechaInicio).toLocaleDateString('es-AR') : '-'}`
+        ].join('\n');
+        QRCode.toCanvas(canvas, texto, { width: 80, margin: 1 });
+    }
 
     // Al abrir el modal, poblar el select con estudiantes activos y precargar datos del curso
     modalDiplomaElement.addEventListener("show.bs.modal", (event) => {
@@ -261,6 +275,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         const cursoId = boton?.dataset?.id;
         const curso = datos.find(c => c.id === Number(cursoId));
         if (!curso) return;
+
+        cursoDiploma = curso;
 
         const selectEstudiante = document.getElementById("estudianteDiploma");
         selectEstudiante.innerHTML = `<option value="">Seleccioná un estudiante...</option>`;
@@ -277,12 +293,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         document.getElementById("diplomaNombreCurso").textContent = curso.nombre;
         document.getElementById("diplomaHoras").textContent = `${curso.cantidadHoras} horas`;
-        document.getElementById("diplomaFecha").textContent = 
-            new Date(curso.fechaInicio).toLocaleDateString('es-AR', { 
-                day: 'numeric', month: 'long', year: 'numeric' 
+        document.getElementById("diplomaFecha").textContent =
+            new Date(curso.fechaInicio).toLocaleDateString('es-AR', {
+                day: 'numeric', month: 'long', year: 'numeric'
             });
 
         document.getElementById("diplomaNombreEstudiante").textContent = "-";
+        generarQRDiploma("-", curso);
     });
 
     // Actualiza la vista previa del diploma al seleccionar un estudiante
@@ -291,8 +308,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         const estudiante = estudiantes.find(e => e.id_estudiante === id);
         if (!estudiante) return;
 
-        document.getElementById("diplomaNombreEstudiante").textContent = 
-            `${estudiante.nombres} ${estudiante.apellido}`;
+        const nombreCompleto = `${estudiante.nombres} ${estudiante.apellido}`;
+        document.getElementById("diplomaNombreEstudiante").textContent = nombreCompleto;
+        generarQRDiploma(nombreCompleto, cursoDiploma);
     });
 
     // Captura la vista previa como imagen y genera el PDF en formato A4 horizontal

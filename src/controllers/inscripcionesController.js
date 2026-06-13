@@ -36,7 +36,8 @@ export async function createInscripcion(req, res, next) {
 
 export async function deleteInscripcion(req, res, next) {
     try {
-        await inscripcionesService.deleteInscripcion(req.params.id);
+        const userId = req.user?.id ?? 1;
+        await inscripcionesService.deleteInscripcion(req.params.id, userId);
         res.status(200).json({ success: true, message: 'Inscripción dada de baja exitosamente' });
     } catch (error) {
         next(error);

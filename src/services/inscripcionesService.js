@@ -93,7 +93,7 @@ export async function createInscripcion(data, userId) {
     return toInscripcionDTO(rowComplete);
 }
 
-export async function deleteInscripcion(id) {
+export async function deleteInscripcion(id, userId) {
     const row = await inscripcionesRepo.findById(id);
     if (!row) {
         const err = new Error('Inscripción no encontrada');
@@ -101,6 +101,6 @@ export async function deleteInscripcion(id) {
         throw err;
     }
 
-    await inscripcionesRepo.deleteById(id);
+    await inscripcionesRepo.deleteById(id, userId);
     return true;
 }
