@@ -14,6 +14,18 @@ const options = {
                 description: 'Servidor local',
             },
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        },
+        security: [{
+            bearerAuth: []
+        }],
     },
     // Archivos que contienen las anotaciones de Swagger
     apis: ['./src/routes/*.js', './src/app.js'], 

@@ -1,4 +1,5 @@
 import * as estRepo from '../repositories/estudiantesRepository.js';
+import * as inscripcionesRepo from '../repositories/inscripcionesRepository.js';
 import { toEstudianteDTO } from '../dtos/estudiantesDto.js';
 
 function crearError(mensaje, statusCode = 500) {
@@ -82,5 +83,8 @@ export async function deleteEstudiante(id, userId) {
     if (!existente) {
         throw crearError(`No se encontró el estudiante con ID ${id}.`, 404);
     }
+    // Damos de baja al estudiante
     await estRepo.softDelete(parseInt(id), userId);
+    // Damos de baja también sus inscripciones activas
+    await inscripcionesRepo.deleteByEstudianteId(parseInt(id), userId);
 }

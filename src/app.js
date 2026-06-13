@@ -56,6 +56,9 @@ app.use(express.urlencoded({ extended: true }));
 // ── Archivos estáticos ────────────────────────────────────────
 app.use(express.static(path.join(__dirname, '../public')));
 
+// ── Documentación Swagger ──────────────────────────────────────
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // ── Rutas de la API (versionadas) ────────────────────────────
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/cursos', authMiddleware, cursosRouter);
