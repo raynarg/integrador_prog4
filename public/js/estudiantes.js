@@ -1,4 +1,10 @@
+// Importar las funciones de autenticación del módulo compartido
+import { setupPaginaProtegida, apiFetch } from './auth.js';
+
 document.addEventListener("DOMContentLoaded", async function () {
+    // Verificar autenticación, mostrar nombre del usuario en sidebar y conectar logout.
+    // Si no hay token, redirige al login y corta la ejecución del script.
+    if (!setupPaginaProtegida()) return;
     let datos = [];
     let paginaActual = 1;
     let totalPaginas = 1;
@@ -47,7 +53,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (inputEmail.value) params.append("email", inputEmail.value.trim());
             if (selectEstado.value !== "") params.append("activo", selectEstado.value);
 
-            const respuesta = await fetch(`/api/v1/estudiantes?${params.toString()}`);
+            // apiFetch agrega automáticamente el header Authorization: Bearer <token>
+            const respuesta = await apiFetch(`/api/v1/estudiantes?${params.toString()}`);
             if (!respuesta.ok) throw new Error("Error al cargar estudiantes");
             
             const json = await respuesta.json();
@@ -166,9 +173,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             try {
                 setCargando("btnConfirmarCrear", "spinnerCrear", true, "Guardar estudiante");
-                const response = await fetch('/api/v1/estudiantes', {
+                // apiFetch agrega Authorization automáticamente; Content-Type es el default
+                const response = await apiFetch('/api/v1/estudiantes', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(nuevoEstudiante)
                 });
 
@@ -224,9 +231,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             try {
                 setCargando("btnGuardarCambios", "spinnerEditar", true, "Guardar cambios");
-                const response = await fetch(`/api/v1/estudiantes/${id}`, {
+                const response = await apiFetch(`/api/v1/estudiantes/${id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(estudianteActualizado)
                 });
 
@@ -268,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             try {
                 setCargando("btnConfirmarEliminar", "spinnerEliminar", true, "Dar de baja");
-                const response = await fetch(`/api/v1/estudiantes/${estudianteIdAEliminar}`, {
+                const response = await apiFetch(`/api/v1/estudiantes/${estudianteIdAEliminar}`, {
                     method: 'DELETE'
                 });
 

@@ -1,7 +1,12 @@
 import html2canvas from "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.esm.js";
 import { jsPDF } from "https://cdn.jsdelivr.net/npm/jspdf@2.5.1/+esm";
+// Importar las funciones de autenticación del módulo compartido
+import { setupPaginaProtegida, apiFetch } from './auth.js';
 
 document.addEventListener("DOMContentLoaded", async function () {
+    // Verificar autenticación, mostrar nombre del usuario en sidebar y conectar logout.
+    // Si no hay token, redirige al login y corta la ejecución del script.
+    if (!setupPaginaProtegida()) return;
     // Estado global del módulo
     let datos = [];           // cursos cargados desde la API (página actual)
     let datosFiltrados = [];  // subconjunto de datos tras aplicar filtros locales
@@ -19,20 +24,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     let paginaActual = 1;
     let totalPaginas = 1;
 
-    // ── Carga inicial ──
-    try {
-        const respuesta = await fetch('/api/cursos');
-        datos = await respuesta.json();
-        datosFiltrados = [...datos];
-        renderizarTablaDeCursos();
-    } catch (error) {
-        console.error("Error en carga de cursos:", error);
-    }
-
     // Carga una página de cursos desde la API y actualiza la tabla y controles de paginación
     async function cargarCursos() {
         try {
-            const respuesta = await fetch(`/api/v1/cursos?page=${paginaActual}&limit=10`);
+            // apiFetch agrega automáticamente el header Authorization: Bearer <token>
+            const respuesta = await apiFetch(`/api/v1/cursos?page=${paginaActual}&limit=10`);
             const json = await respuesta.json();
             
             datos = json.data;
@@ -151,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (estadoFiltro) {
                 params.append("id_curso_estado", estadoFiltro);
             }
-            const respuesta = await fetch(`/api/v1/cursos?${params.toString()}`);
+            const respuesta = await apiFetch(`/api/v1/cursos?${params.toString()}`);
             const json = await respuesta.json();
             datos = json.data;
             datosFiltrados = [...datos];
@@ -207,9 +203,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         try {
             setCargando("btnConfirmarCrear", "spinnerCrear", true, "Crear curso");
-            const response = await fetch('/api/v1/cursos', {
+            // apiFetch agrega Authorization automáticamente; Content-Type es el default
+            const response = await apiFetch('/api/v1/cursos', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevoCurso)
             });
 
@@ -247,7 +243,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function cargarEstudiantesParaDiploma() {
         try {
-            const respuestaEst = await fetch('/api/v1/estudiantes?activo=1&limit=1000');
+            const respuestaEst = await apiFetch('/api/v1/estudiantes?activo=1&limit=1000');
             const jsonEst = await respuestaEst.json();
             estudiantes = jsonEst.data || [];
         } catch (error) {
@@ -380,7 +376,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         
         try {
             setCargando("btnConfirmarEliminar", "spinnerEliminar", true, "Eliminar");
-            const respuesta = await fetch(`/api/v1/cursos/${cursoIdAEliminar}`, {
+            const respuesta = await apiFetch(`/api/v1/cursos/${cursoIdAEliminar}`, {
                 method: 'DELETE'
             });
 
@@ -444,9 +440,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         try {
             setCargando("btnGuardarCambios", "spinnerEditar", true, "Guardar cambios");
-            const response = await fetch(`/api/v1/cursos/${cursoEditando.id}`, {
+            const response = await apiFetch(`/api/v1/cursos/${cursoEditando.id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cursoActualizado)
             });
 

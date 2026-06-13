@@ -20,6 +20,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import cursosRouter from './routes/cursosRoutes.js';
 import estudiantesRouter from './routes/estudiantesRoutes.js';
+import authRouter from './routes/authRoutes.js';               // rutas públicas de autenticación
+import { authMiddleware } from './middlewares/authMiddleware.js'; // protege rutas privadas
 import { errorHandler } from './middlewares/errorHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -54,8 +56,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // ── Rutas de la API (versionadas) ────────────────────────────
-app.use('/api/v1/cursos', cursosRouter);
-app.use('/api/v1/estudiantes', estudiantesRouter);
+
+// Ruta pública: no requiere token (el usuario aún no está autenticado)
+app.use('/api/v1/auth', authRouter);
+
+// Rutas privadas: el authMiddleware verifica el JWT antes de llegar al controlador
+// Si el token es inválido o falta, el middleware responde 401 y corta el pipeline
+app.use('/api/v1/cursos', authMiddleware, cursosRouter);
+app.use('/api/v1/estudiantes', authMiddleware, estudiantesRouter);
 
 // Manejador de errores global — siempre va al final
 app.use(errorHandler);
