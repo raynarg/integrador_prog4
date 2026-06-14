@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </div>
                 </td>
                 <td class="text-end">
-                    <a href="inscripciones.html" class="btn btn-outline-secondary btn-sm">Ver Inscripciones</a>
+                    <a href="inscripciones.html?curso=${curso.id}" class="btn btn-outline-secondary btn-sm">Ver Inscripciones</a>
                 </td>
             `;
             tbodyCursos.appendChild(fila);

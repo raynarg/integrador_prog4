@@ -36,8 +36,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         inputNuevaFecha.value = new Date().toISOString().split('T')[0];
     }
 
-    // Cargar datos iniciales
+    // 1. Cargar datos iniciales (Esto llena el <select> con todos los nombres de los cursos)
     await cargarDatosAuxiliares();
+
+    // 2. Revisar si venimos desde el Dashboard con un curso seleccionado
+    const parametrosURL = new URLSearchParams(window.location.search);
+    const idCursoFiltro = parametrosURL.get('curso'); // Atrapa el número, por ej: "2"
+
+    // 3. Si hay un número, le decimos al filtro que se posicione en ese curso
+    if (idCursoFiltro && selectCurso) {
+        selectCurso.value = idCursoFiltro; // Al cambiar el value, el <select> muestra automáticamente el NOMBRE del curso
+    }
+
+    // 4. Cargar la tabla de inscripciones (como el filtro ya tiene un curso seleccionado, la tabla va a traer solo esos datos)
     await cargarInscripciones();
 
     // ==========================================
