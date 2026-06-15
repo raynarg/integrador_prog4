@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Administrativos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="css/admin-layout.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="js/usuarios.js" type="module" defer></script>
+</head>
+<body class="page-body">
+  <div class="container-fluid page-shell">
+    <div class="row min-vh-100">
+      <aside class="col-12 col-lg-2 sidebar-panel text-white d-flex flex-lg-column p-3 gap-3">
+        <div class="d-flex align-items-center justify-content-between d-lg-block w-100">
+          <div class="d-flex align-items-center gap-2">
+            <div class="sidebar-brand text-white fw-bold rounded-3 d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;">FC</div>
+            <div class="fw-semibold d-lg-none">FCAD UNER</div>
+          </div>
+          <button class="btn btn-outline-light btn-sm d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarNav" aria-controls="sidebarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="collapse d-lg-block w-100" id="sidebarNav">
+          <div class="nav nav-pills flex-column gap-1 mt-2">
+            <a href="dashboard.html" class="nav-link sidebar-link text-white-50">Dashboard</a>
+            <a href="estudiantes.html" class="nav-link sidebar-link text-white-50">Estudiantes</a>
+            <a href="cursos.html" class="nav-link sidebar-link text-white-50">Cursos</a>
+            <a href="inscripciones.html" class="nav-link sidebar-link text-white-50">Inscripciones</a>
+            <a id="navAdministrativos" href="usuarios.html" class="nav-link sidebar-link active">Administrativos</a>
+          </div>
+        </div>
+
+        <hr class="border-secondary opacity-25 d-none d-lg-block mt-auto mb-0">
+        <a href="cambiar-contrasenia.html" class="nav-link sidebar-link text-white-50 d-none d-lg-block py-2">Cambiar contraseña</a>
+        <div class="pt-3 d-none d-lg-flex align-items-center gap-2">
+          <div id="sidebarUserInitial" class="rounded-circle brand-circle d-inline-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;">N</div>
+          <div>
+            <div id="sidebarUserNombre" class="fw-semibold">Usuario</div>
+            <small id="sidebarUserUsuario" class="text-white-50">admin</small>
+          </div>
+        </div>
+      </aside>
+
+      <main class="col-12 col-lg-10 px-0">
+        <nav class="navbar navbar-expand bg-white border-bottom sticky-top navbar-brandbar">
+          <div class="container-fluid px-3 px-lg-4">
+            <span class="navbar-brand mb-0 h1 fs-6 fw-semibold">Sistema de Inscripciones</span>
+            <div class="ms-auto d-flex align-items-center gap-3">
+              <button class="btn btn-link text-secondary p-0" type="button" aria-label="Notificaciones">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </button>
+              <a id="btnLogout" href="index.html" class="btn btn-outline-secondary btn-sm">Cerrar sesión</a>
+            </div>
+          </div>
+        </nav>
+
+        <div class="p-3 p-lg-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Gestión de Personal</h2>
+              <p class="text-secondary mb-0">Administrativos de la Facultad — Listado y gestión del personal con acceso al sistema.</p>
+            </div>
+            <button id="btnNuevoUsuario"
+                    class="btn btn-brand d-inline-flex align-items-center gap-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalUsuario">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Nuevo usuario
+            </button>
+          </div>
+
+          <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-brand-soft text-uppercase small text-secondary">
+                  <tr>
+                    <th class="px-4">Nombre Completo</th>
+                    <th>Nombre de Usuario</th>
+                    <th class="text-end px-4">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaUsuariosBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Crear / Editar Usuario -->
+  <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow border-0">
+        <div class="modal-header bg-primary text-white border-0">
+          <h5 class="modal-title" id="modalUsuarioTitulo">
+            <i class="bi bi-person-plus me-2"></i>
+            Registrar usuario
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="formUsuario">
+          <div class="modal-body">
+            <input type="hidden" id="usuarioId">
+            <div class="mb-3">
+              <label for="inputNombre" class="form-label fw-medium">Nombre</label>
+              <input type="text" class="form-control" id="inputNombre" required>
+            </div>
+            <div class="mb-3">
+              <label for="inputApellido" class="form-label fw-medium">Apellido</label>
+              <input type="text" class="form-control" id="inputApellido" required>
+            </div>
+            <div class="mb-3">
+              <label for="inputUsername" class="form-label fw-medium">Nombre de usuario</label>
+              <input type="text" class="form-control" id="inputUsername" required>
+            </div>
+            <div class="mb-3" id="grupoPassword">
+              <label for="inputPassword" class="form-label fw-medium">Contraseña</label>
+              <input type="password" class="form-control" id="inputPassword" minlength="4">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Restablecer Contraseña -->
+  <div class="modal fade" id="modalPassword" tabindex="-1" aria-labelledby="modalPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content shadow border-0">
+        <div class="modal-header bg-primary text-white border-0">
+          <h5 class="modal-title" id="modalPasswordLabel">
+            <i class="bi bi-key me-2"></i>
+            Restablecer contraseña
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="formPassword">
+          <div class="modal-body">
+            <input type="hidden" id="passwordUsuarioId">
+            <div class="mb-3">
+              <label for="inputPasswordNueva" class="form-label fw-medium">Nueva contraseña</label>
+              <input type="password" class="form-control" id="inputPasswordNueva" minlength="4" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Restablecer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Confirmar baja de usuario -->
+  <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg">
+        <div class="modal-header bg-primary text-white border-0">
+          <h5 class="modal-title" id="modalEliminarLabel">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Confirmar baja de usuario
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <i class="bi bi-person-x-fill text-secondary fs-1 mb-3 d-block"></i>
+          <p class="mb-2">¿Seguro que querés dar de baja a este usuario?</p>
+          <div class="bg-light border rounded p-2">
+            <strong id="nombreUsuarioAEliminar" class="text-primary"></strong>
+          </div>
+          <small class="text-muted d-block mt-2">Ya no tendrá acceso al sistema.</small>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button id="btnConfirmarEliminar" class="btn btn-primary">
+            <span id="spinnerEliminar" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            <span id="textoEliminar">Dar de baja</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -352,7 +352,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('detalleFechaInicio').textContent = curso.fechaInicio ? new Date(curso.fechaInicio).toLocaleDateString('es-AR') : 'Sin fecha';
             document.getElementById('detalleCantidadHoras').textContent = `${curso.cantidadHoras} horas`;
             document.getElementById('detalleMaxInscriptosTexto').textContent = `${curso.inscriptosMax} lugares`;
-            document.getElementById('detalleUltimaModificacion').textContent = curso.ultimaModificacion ? new Date(curso.ultimaModificacion).toLocaleString('es-AR') : 'Sin datos';
+            const fechaMod = curso.ultimaModificacion ? new Date(curso.ultimaModificacion).toLocaleString('es-AR') : 'Sin datos';
+            const userMod = curso.idUsuarioModificacion ? ` (Usuario ID: ${curso.idUsuarioModificacion})` : '';
+            document.getElementById('detalleUltimaModificacion').textContent = fechaMod + userMod;
 
             document.getElementById('detalleEstado').innerHTML = `
                 <span class="badge text-bg-dark-subtle text-dark border border-dark-subtle">

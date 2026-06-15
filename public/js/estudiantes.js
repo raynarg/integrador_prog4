@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const inputDocumento = document.getElementById("buscarDocumento");
     const inputNombre = document.getElementById("buscarNombre");
     const inputEmail = document.getElementById("buscarEmail");
-    const selectEstado = document.getElementById("filtroEstado");
     const btnLimpiar = document.getElementById("btnLimpiarFiltros");
 
     // Formulario Crear
@@ -48,10 +47,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             params.append("limit", limit);
             
             // Agregar filtros si existen
+            params.append("activo", "1");
             if (inputDocumento.value) params.append("documento", inputDocumento.value.trim());
             if (inputNombre.value) params.append("nombre", inputNombre.value.trim());
             if (inputEmail.value) params.append("email", inputEmail.value.trim());
-            if (selectEstado.value !== "") params.append("activo", selectEstado.value);
 
             // apiFetch agrega automáticamente el header Authorization: Bearer <token>
             const respuesta = await apiFetch(`/api/v1/estudiantes?${params.toString()}`);
@@ -75,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         tablaBody.innerHTML = "";
 
         if (datos.length === 0) {
-            tablaBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No se encontraron estudiantes</td></tr>`;
+            tablaBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">No se encontraron estudiantes</td></tr>`;
             return;
         }
 
@@ -87,11 +86,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <div class="fw-medium">${est.apellido}, ${est.nombres}</div>
                 </td>
                 <td>${est.email}</td>
-                <td>
-                    <span class="badge ${est.activo ? 'text-bg-success-subtle text-success border-success-subtle' : 'text-bg-danger-subtle text-danger border-danger-subtle'} border">
-                        ${est.activo ? 'Activo' : 'Inactivo'}
-                    </span>
-                </td>
                 <td class="text-end">
                     <div class="btn-group btn-group-sm">
                         <button class="btn btn-outline-primary py-0 px-2" data-bs-toggle="modal" data-bs-target="#modalDetalle" data-id="${est.id_estudiante}" title="Ver Detalle">
@@ -120,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // EVENTOS DE BÚSQUEDA Y FILTROS
     // ==========================================
 
-    const inputsFiltro = [inputDocumento, inputNombre, inputEmail, selectEstado];
+    const inputsFiltro = [inputDocumento, inputNombre, inputEmail];
     inputsFiltro.forEach(input => {
         if (input) {
             input.addEventListener("input", () => {
@@ -312,7 +306,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             document.getElementById('detalleApellido').textContent = est.apellido;
             document.getElementById('detalleNombre').textContent = est.nombres;
             document.getElementById('detalleEmail').textContent = est.email;
-            document.getElementById('detalleUltimaModificacion').textContent = est.fecha_hora_modificacion ? new Date(est.fecha_hora_modificacion).toLocaleString('es-AR') : 'Sin datos';
+            const fechaMod = est.fecha_hora_modificacion ? new Date(est.fecha_hora_modificacion).toLocaleString('es-AR') : 'Sin datos';
+            const userMod = est.id_usuario_modificacion ? ` (Usuario ID: ${est.id_usuario_modificacion})` : '';
+            document.getElementById('detalleUltimaModificacion').textContent = fechaMod + userMod;
             
             document.getElementById('detalleEstado').innerHTML = `
                 <span class="badge ${est.activo ? 'text-bg-success-subtle text-success border-success-subtle' : 'text-bg-danger-subtle text-danger border-danger-subtle'} border">
