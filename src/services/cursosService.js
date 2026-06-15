@@ -13,6 +13,7 @@
 // ============================================================
 
 import * as cursosRepo from '../repositories/cursosRepository.js';
+import * as inscripcionesRepo from '../repositories/inscripcionesRepository.js';
 import { toCursoDTO }  from '../dtos/cursosDto.js';
 
 // ─────────────────────────────────────────────────────────────
@@ -201,4 +202,6 @@ export async function deleteCurso(id, userId) {
     }
 
     await cursosRepo.softDelete(parseInt(id), userId);
+    // Damos de baja también sus inscripciones activas (borrado en cascada)
+    await inscripcionesRepo.deleteByCursoId(parseInt(id), userId);
 }

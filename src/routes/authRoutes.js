@@ -49,6 +49,47 @@ const router = Router();
  */
 router.post('/login', validarLogin, validate, ctrl.login);
 
+/**
+ * @swagger
+ * /api/v1/auth/password:
+ *   put:
+ *     summary: Cambiar la contraseña del usuario autenticado
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [contrasenia_actual, contrasenia_nueva]
+ *             properties:
+ *               contrasenia_actual:
+ *                 type: string
+ *                 example: "miContrasenia123"
+ *               contrasenia_nueva:
+ *                 type: string
+ *                 example: "nuevaContrasenia456"
+ *     responses:
+ *       200:
+ *         description: Contraseña cambiada con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Contraseña actualizada correctamente"
+ *       400:
+ *         description: Datos de entrada inválidos o contraseña incorrecta
+ *       401:
+ *         description: No autorizado
+ */
 router.put('/password', authMiddleware, validarCambioContrasenia, validate, ctrl.cambiarContrasenia);
 
 export default router;

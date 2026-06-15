@@ -77,17 +77,72 @@ const router = Router();
  * @swagger
  * /api/v1/cursos:
  *   get:
- *     summary: Obtiene la lista de todos los cursos
+ *     summary: Obtiene la lista de todos los cursos con paginación y filtros
  *     tags: [Cursos]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Número de página
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Cantidad de registros por página (máx 100)
+ *       - in: query
+ *         name: nombre
+ *         schema:
+ *           type: string
+ *         description: Filtrar por nombre del curso (coincidencia parcial)
+ *       - in: query
+ *         name: id_curso_estado
+ *         schema:
+ *           type: integer
+ *           enum: [1, 2, 3]
+ *         description: "Filtrar por estado del curso: 1 (Borrador), 2 (Abierto), 3 (Cerrado)"
  *     responses:
  *       200:
  *         description: Lista de cursos obtenida con éxito
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Curso'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                       example: 15
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     limit:
+ *                       type: integer
+ *                       example: 10
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 2
+ *                     hasNext:
+ *                       type: boolean
+ *                       example: true
+ *                     hasPrev:
+ *                       type: boolean
+ *                       example: false
+ *       401:
+ *         description: No autorizado
  */
 router.get('/',     ctrl.getCursos);
 
@@ -97,6 +152,8 @@ router.get('/',     ctrl.getCursos);
  *   get:
  *     summary: Obtiene un curso por su ID
  *     tags: [Cursos]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -110,7 +167,15 @@ router.get('/',     ctrl.getCursos);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Curso'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
+ *       401:
+ *         description: No autorizado
  *       404:
  *         description: Curso no encontrado
  */
@@ -122,6 +187,8 @@ router.get('/:id',  validarId, validate, ctrl.getCursoById);
  *   post:
  *     summary: Crea un nuevo curso
  *     tags: [Cursos]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -131,8 +198,20 @@ router.get('/:id',  validarId, validate, ctrl.getCursoById);
  *     responses:
  *       201:
  *         description: Curso creado con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
  *       400:
  *         description: Error en los datos de entrada
+ *       401:
+ *         description: No autorizado
  */
 router.post('/',    validarCurso, validate, ctrl.createCurso);
 
@@ -142,6 +221,8 @@ router.post('/',    validarCurso, validate, ctrl.createCurso);
  *   put:
  *     summary: Actualiza un curso existente
  *     tags: [Cursos]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -158,10 +239,22 @@ router.post('/',    validarCurso, validate, ctrl.createCurso);
  *     responses:
  *       200:
  *         description: Curso actualizado con éxito
- *       404:
- *         description: Curso no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Curso'
  *       400:
  *         description: Error en los datos de entrada
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Curso no encontrado
  */
 router.put('/:id',  validarId, validarCurso, validate, ctrl.updateCurso);
 
@@ -171,6 +264,8 @@ router.put('/:id',  validarId, validarCurso, validate, ctrl.updateCurso);
  *   delete:
  *     summary: Elimina un curso (borrado lógico)
  *     tags: [Cursos]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -179,8 +274,21 @@ router.put('/:id',  validarId, validarCurso, validate, ctrl.updateCurso);
  *           type: integer
  *         description: ID del curso
  *     responses:
- *       204:
+ *       200:
  *         description: Curso eliminado con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Curso 1 eliminado correctamente."
+ *       401:
+ *         description: No autorizado
  *       404:
  *         description: Curso no encontrado
  */
