@@ -22,6 +22,7 @@ import cursosRouter from './routes/cursosRoutes.js';
 import estudiantesRouter from './routes/estudiantesRoutes.js';
 import inscripcionesRouter from './routes/inscripcionesRoutes.js';
 import authRouter from './routes/authRoutes.js';
+import usuariosRouter from './routes/usuariosRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -61,6 +62,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/cursos', authMiddleware, cursosRouter);
 app.use('/api/v1/estudiantes', authMiddleware, estudiantesRouter);
 app.use('/api/v1/inscripciones', authMiddleware, inscripcionesRouter);
+app.use('/api/v1/usuarios', usuariosRouter);
 
 // Manejador de errores global — siempre va al final
 app.use(errorHandler);

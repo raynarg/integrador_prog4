@@ -174,6 +174,12 @@ export function setupPaginaProtegida() {
         // En el dashboard también hay un subtexto con el nombre_usuario
         const elUsuario = document.getElementById('sidebarUserUsuario');
         if (elUsuario) elUsuario.textContent = usuario.nombre_usuario;
+
+        // Si el usuario es el administrador global, mostrar la opción del menú
+        if (usuario.nombre_usuario === (window.__ADMIN_USERNAME__ || 'admin')) {
+            const navAdmin = document.getElementById('navAdministrativos');
+            if (navAdmin) navAdmin.classList.remove('d-none');
+        }
     }
 
     // 3. Conectar el botón de cerrar sesión para que use logout() en lugar del href

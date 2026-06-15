@@ -29,15 +29,6 @@ export async function findById(id) {
     return resultado.rows[0];
 }
 
-export async function updatePassword(id, hashedPassword) {
-    await pool.query(
-        `UPDATE usuarios
-         SET contrasenia = $1
-         WHERE id_usuario = $2`,
-        [hashedPassword, id]
-    );
-}
-
 export async function findByUsername(nombre_usuario) {
     const resultado = await pool.query(
         `SELECT id_usuario, apellido, nombre, nombre_usuario, contrasenia
@@ -46,6 +37,58 @@ export async function findByUsername(nombre_usuario) {
            AND activo = 1`,
         [nombre_usuario]
     );
+    return resultado.rows[0];
+}
 
+export async function updatePassword(id, hashedPassword) {
+    await pool.query(
+        `UPDATE usuarios
+         SET contrasenia = $1
+         WHERE id_usuario = $2
+           AND activo = 1`,
+        [hashedPassword, id]
+    );
+}
+
+export async function findAll() {
+    const resultado = await pool.query(
+        `SELECT id_usuario, apellido, nombre, nombre_usuario
+         FROM usuarios
+         WHERE activo = 1
+         ORDER BY apellido ASC, nombre ASC`
+    );
+    return resultado.rows;
+}
+
+export async function create({ nombre, apellido, nombre_usuario, contrasenia }) {
+    const resultado = await pool.query(
+        `INSERT INTO usuarios (nombre, apellido, nombre_usuario, contrasenia, activo)
+         VALUES ($1, $2, $3, $4, 1)
+         RETURNING id_usuario, nombre, apellido, nombre_usuario`,
+        [nombre, apellido, nombre_usuario, contrasenia]
+    );
+    return resultado.rows[0];
+}
+
+export async function update(id, { nombre, apellido, nombre_usuario }) {
+    const resultado = await pool.query(
+        `UPDATE usuarios
+         SET nombre = $1, apellido = $2, nombre_usuario = $3
+         WHERE id_usuario = $4
+           AND activo = 1
+         RETURNING id_usuario, nombre, apellido, nombre_usuario`,
+        [nombre, apellido, nombre_usuario, id]
+    );
+    return resultado.rows[0];
+}
+
+export async function deactivate(id) {
+    const resultado = await pool.query(
+        `UPDATE usuarios
+         SET activo = 0
+         WHERE id_usuario = $1
+         RETURNING id_usuario`,
+        [id]
+    );
     return resultado.rows[0];
 }

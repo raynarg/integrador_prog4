@@ -92,7 +92,11 @@ export async function createInscripcion(data, userId) {
     // Retornamos el DTO de la inscripción recién creada consultando su información completa (con JOINs)
     const rowComplete = await inscripcionesRepo.findById(inscripcion.id_inscripcion);
     const dto = toInscripcionDTO(rowComplete);
-    await sendConfirmacionInscripcion(dto);
+
+    sendConfirmacionInscripcion(dto).catch(err =>
+        console.warn('Email de confirmación no enviado:', err.message)
+    );
+
     return dto;
 }
 

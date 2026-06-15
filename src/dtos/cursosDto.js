@@ -23,7 +23,8 @@ export function toCursoDTO(curso) {
         fechaInicio:         curso.fecha_inicio,
         cantidadHoras:       curso.cantidad_horas,
         inscriptosMax:       curso.inscriptos_max,
-        estado:              curso.id_curso_estado,
-        ultimaModificacion:  curso.fecha_hora_modificacion
+        estado:                curso.id_curso_estado,
+        ultimaModificacion:    curso.fecha_hora_modificacion,
+        idUsuarioModificacion: curso.id_usuario_modificacion
     };
 }
