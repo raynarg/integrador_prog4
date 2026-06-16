@@ -24,6 +24,7 @@ import inscripcionesRouter from './routes/inscripcionesRoutes.js';
 import authRouter from './routes/authRoutes.js';
 import usuariosRouter from './routes/usuariosRoutes.js';
 import { authMiddleware } from './middlewares/authMiddleware.js';
+import { adminMiddleware } from './middlewares/adminMiddleware.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -60,12 +61,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 // ── Documentación Swagger ──────────────────────────────────────
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// ── Rutas de la API (versionadas) ────────────────────────────
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/cursos', authMiddleware, cursosRouter);
 app.use('/api/v1/estudiantes', authMiddleware, estudiantesRouter);
 app.use('/api/v1/inscripciones', authMiddleware, inscripcionesRouter);
-app.use('/api/v1/usuarios', usuariosRouter);
+app.use('/api/v1/usuarios', authMiddleware, adminMiddleware, usuariosRouter);
 
 // Manejador de errores global — siempre va al final
 app.use(errorHandler);

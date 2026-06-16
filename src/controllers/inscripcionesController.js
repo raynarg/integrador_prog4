@@ -25,8 +25,7 @@ export async function getInscripcionById(req, res, next) {
 
 export async function createInscripcion(req, res, next) {
     try {
-        // En una app real, el userId vendría del middleware de autenticación en req.user
-        const userId = req.user?.id ?? 1; 
+        const userId = req.user.id; 
         const nueva = await inscripcionesService.createInscripcion(req.body, userId);
         res.status(201).json({ success: true, data: nueva });
     } catch (error) {
@@ -36,7 +35,7 @@ export async function createInscripcion(req, res, next) {
 
 export async function deleteInscripcion(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         await inscripcionesService.deleteInscripcion(req.params.id, userId);
         res.status(200).json({ success: true, message: 'Inscripción dada de baja exitosamente' });
     } catch (error) {

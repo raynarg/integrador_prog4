@@ -78,7 +78,7 @@ export async function getCursoById(req, res, next) {
  */
 export async function createCurso(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         const nuevo  = await cursosService.createCurso(req.body, userId);
         res.status(201).json({ success: true, data: nuevo });
     } catch (error) {
@@ -102,7 +102,7 @@ export async function createCurso(req, res, next) {
  */
 export async function updateCurso(req, res, next) {
     try {
-        const userId      = req.user?.id ?? 1;
+        const userId      = req.user.id;
         const actualizado = await cursosService.updateCurso(req.params.id, req.body, userId);
         res.status(200).json({ success: true, data: actualizado });
     } catch (error) {
@@ -126,7 +126,7 @@ export async function updateCurso(req, res, next) {
  */
 export async function deleteCurso(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         await cursosService.deleteCurso(req.params.id, userId);
         res.status(200).json({ success: true, message: `Curso ${req.params.id} eliminado correctamente.` });
     } catch (error) {

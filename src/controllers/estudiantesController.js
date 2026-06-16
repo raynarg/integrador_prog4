@@ -20,7 +20,7 @@ export async function getEstudianteById(req, res, next) {
 
 export async function createEstudiante(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         const nuevo = await estService.createEstudiante(req.body, userId);
         res.status(201).json({ success: true, data: nuevo });
     } catch (error) {
@@ -30,7 +30,7 @@ export async function createEstudiante(req, res, next) {
 
 export async function updateEstudiante(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         const actualizado = await estService.updateEstudiante(req.params.id, req.body, userId);
         res.status(200).json({ success: true, data: actualizado });
     } catch (error) {
@@ -40,7 +40,7 @@ export async function updateEstudiante(req, res, next) {
 
 export async function deleteEstudiante(req, res, next) {
     try {
-        const userId = req.user?.id ?? 1;
+        const userId = req.user.id;
         await estService.deleteEstudiante(req.params.id, userId);
         res.status(200).json({ success: true, message: `Estudiante ${req.params.id} dado de baja.` });
     } catch (error) {

@@ -5,8 +5,6 @@
 // ============================================================
 
 import { Router } from 'express';
-import { authMiddleware } from '../middlewares/authMiddleware.js';
-import { adminMiddleware } from '../middlewares/adminMiddleware.js';
 import * as ctrl from '../controllers/usuariosController.js';
 
 const router = Router();
@@ -88,7 +86,7 @@ const router = Router();
  *   description: Rutas de gestión de usuarios (solo administradores)
  */
 
-router.use(authMiddleware, adminMiddleware);
+
 
 /**
  * @swagger
