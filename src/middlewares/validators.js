@@ -48,8 +48,14 @@ export const validarCurso = [
     body('descripcion').trim().notEmpty(),
     body('fecha_inicio').isDate(),
     // Rango 1-500: un curso de 0 horas no tiene sentido; 500 es el máximo aceptable
-    body('cantidad_horas').isInt({ min: 1, max: 500 }),
-    body('inscriptos_max').isInt({ min: 1 }),
+    body('cantidad_horas')
+        .isInt({ min: 1, max: 200 }) // Valida que sea un número entero y esté en el rango de 1 a 200
+        .withMessage('La cantidad de horas debe ser un número entero entre 1 y 200'),
+
+    // LINEA A AGREGAR/MODIFICAR PARA ALUMNOS:
+    body('inscriptos_max')
+        .isInt({ min: 1, max: 50 }) // Valida que sea un número entero y no supere los 50 alumnos
+        .withMessage('La cantidad máxima de alumnos debe ser un número entero entre 1 y 50'),
     // Los estados válidos son: 1 = activo, 2 = inactivo, 3 = cancelado
     body('id_curso_estado').isInt({ min: 1, max: 3 }),
 ];

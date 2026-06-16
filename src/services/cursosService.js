@@ -129,6 +129,14 @@ export async function createCurso(data, userId) {
         throw crearError('Un curso con inscripción abierta debe tener inscriptos_max mayor a 0.', 400);
     }
 
+    if (data.cantidad_horas > 200) {
+        throw crearError('La cantidad de horas no puede ser mayor a 200.', 400); // Lanza error 400 si supera el límite de horas
+    }
+
+    if (data.inscriptos_max > 50) {
+        throw crearError('La cantidad máxima de alumnos permitida es de 50.', 400); // Lanza error 400 si supera el cupo de alumnos
+    }
+
     const nuevo = await cursosRepo.create({
         ...data,
         id_usuario_modificacion: userId,
@@ -162,6 +170,13 @@ export async function updateCurso(id, data, userId) {
         throw crearError(`No se encontró el curso con ID ${id}.`, 404);
     }
 
+    if (data.cantidad_horas > 200) {
+        throw crearError('La cantidad de horas no puede ser mayor a 200.', 400); // Lanza error 400 si supera el límite de horas
+    }
+
+    if (data.inscriptos_max > 50) {
+        throw crearError('La cantidad máxima de alumnos permitida es de 50.', 400); // Lanza error 400 si supera el cupo de alumnos
+    }
     // Solo validar la fecha si se está enviando una nueva y es distinta a la almacenada.
     // Esto evita rechazar updates de otros campos cuando la fecha ya existente es pasada.
     if (data.fecha_inicio) {

@@ -187,23 +187,65 @@ document.addEventListener("DOMContentLoaded", async function () {
     // ==========================================
     const formCrear = document.getElementById("formCrearCurso");
 
-    // Envía el formulario al backend y recarga la tabla sin recargar la página
+    // 1. Configuración de la validación en tiempo real
+    const inputHorasCrear = document.getElementById("nuevasHoras");
+    const inputInscriptosCrear = document.getElementById("nuevoMax");
+
+    function validarCasilla(input, limite) {
+        if (!input.value) {
+            input.classList.remove("is-invalid");
+            return true;
+        }
+        const valor = parseInt(input.value);
+        if (valor > limite) {
+            input.classList.add("is-invalid");
+            return false;
+        } else {
+            input.classList.remove("is-invalid");
+            return true;
+        }
+    }
+
+    // Escuchamos cuando el usuario sale de la casilla (blur) o escribe (input)
+    if (inputHorasCrear) {
+        inputHorasCrear.addEventListener("blur", () => validarCasilla(inputHorasCrear, 200));
+        inputHorasCrear.addEventListener("input", () => inputHorasCrear.classList.remove("is-invalid"));
+    }
+
+    if (inputInscriptosCrear) {
+        inputInscriptosCrear.addEventListener("blur", () => validarCasilla(inputInscriptosCrear, 50));
+        inputInscriptosCrear.addEventListener("input", () => inputInscriptosCrear.classList.remove("is-invalid"));
+    }
+
+    // 2. Envío del formulario al backend
     formCrear.addEventListener("submit", async (e) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // --- LA BARRERA DE DEFENSA ---
+        // Chequeamos las casillas antes de armar el objeto
+        const horasValidas = validarCasilla(inputHorasCrear, 200);
+        const inscriptosValidos = validarCasilla(inputInscriptosCrear, 50);
+
+        // Si alguna casilla supera el límite, cortamos la ejecución acá.
+        // El modal se queda abierto y las casillas se pintan de rojo.
+        if (!horasValidas || !inscriptosValidos) {
+            return; 
+        }
+        // ------------------------------
 
         const nuevoCurso = {
             nombre: document.getElementById("nuevoNombre").value.trim(),
             descripcion: document.getElementById("nuevaDescripcion").value.trim(),
             fecha_inicio: document.getElementById("nuevaFechaInicio").value,
-            cantidad_horas: Number(document.getElementById("nuevasHoras").value),
-            inscriptos_max: Number(document.getElementById("nuevoMax").value),
+            cantidad_horas: Number(inputHorasCrear.value),
+            inscriptos_max: Number(inputInscriptosCrear.value),
             id_curso_estado: Number(document.getElementById("nuevoEstado").value)
         };
 
         try {
             setCargando("btnConfirmarCrear", "spinnerCrear", true, "Crear curso");
-            // apiFetch agrega Authorization automáticamente; Content-Type es el default
+            
             const response = await apiFetch('/api/v1/cursos', {
                 method: 'POST',
                 body: JSON.stringify(nuevoCurso)
@@ -425,6 +467,21 @@ document.addEventListener("DOMContentLoaded", async function () {
     const modalEditar = document.getElementById("modalEditar");
     let cursoEditando = null;
 
+    // 1. Configuración de la validación en tiempo real (Edición)
+    const inputHorasEditar = document.getElementById("editarHoras");
+    const inputInscriptosEditar = document.getElementById("editarMax");
+
+    // Escuchamos cuando el usuario sale de la casilla (blur) o escribe (input)
+    if (inputHorasEditar) {
+        inputHorasEditar.addEventListener("blur", () => validarCasilla(inputHorasEditar, 200));
+        inputHorasEditar.addEventListener("input", () => inputHorasEditar.classList.remove("is-invalid"));
+    }
+
+    if (inputInscriptosEditar) {
+        inputInscriptosEditar.addEventListener("blur", () => validarCasilla(inputInscriptosEditar, 50));
+        inputInscriptosEditar.addEventListener("input", () => inputInscriptosEditar.classList.remove("is-invalid"));
+    }
+
     // Al abrir el modal, precarga los campos del formulario con los datos actuales del curso
     modalEditar.addEventListener("show.bs.modal", (event) => {
         const boton = event.relatedTarget;
@@ -432,6 +489,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const curso = datos.find(c => c.id === Number(id));
         if (!curso) return;
         cursoEditando = curso;
+        
+        // Limpiamos cualquier error visual que haya quedado de una edición anterior
+        if (inputHorasEditar) inputHorasEditar.classList.remove("is-invalid");
+        if (inputInscriptosEditar) inputInscriptosEditar.classList.remove("is-invalid");
+
         document.getElementById("editarIdCurso").value = curso.id;
         document.getElementById("editarNombre").value = curso.nombre;
         document.getElementById("editarDescripcion").value = curso.descripcion || "";
@@ -445,12 +507,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById("btnGuardarCambios").addEventListener("click", async () => {
         if (!cursoEditando) return;
 
+        // --- LA BARRERA DE DEFENSA EN LA EDICIÓN ---
+        const horasValidas = validarCasilla(inputHorasEditar, 200);
+        const inscriptosValidos = validarCasilla(inputInscriptosEditar, 50);
+
+        // Si alguna casilla supera el límite, cortamos la ejecución acá.
+        if (!horasValidas || !inscriptosValidos) {
+            return; 
+        }
+        // -------------------------------------------
+
         const cursoActualizado = {
             nombre: document.getElementById("editarNombre").value.trim(),
             descripcion: document.getElementById("editarDescripcion").value.trim(),
             fecha_inicio: document.getElementById("editarFechaInicio").value,
-            cantidad_horas: Number(document.getElementById("editarHoras").value),
-            inscriptos_max: Number(document.getElementById("editarMax").value),
+            cantidad_horas: Number(inputHorasEditar.value),
+            inscriptos_max: Number(inputInscriptosEditar.value),
             id_curso_estado: Number(document.getElementById("editarEstado").value)
         };
 
