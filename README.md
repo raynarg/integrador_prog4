@@ -58,6 +58,8 @@ La API cuenta con documentación interactiva generada con Swagger UI.
   ```bash
   npm run swagger-gen
   ```
+## Prototipo original (Diseño)
+linkg: https://drive.google.com/drive/folders/1HKUvz8q0cD5spa3wxFfdWDmxt4_UgUZy?usp=sharing
 
 ## Estructura de Carpetas
 
