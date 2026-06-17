@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // ==========================================
-    // CRUD: CREAR INSCRIPCIÓN
+    //  CREAR INSCRIPCIÓN
     // ==========================================
     if (formCrear) {
         formCrear.addEventListener("submit", async (e) => {
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // ==========================================
-    // CRUD: ELIMINAR INSCRIPCIÓN
+    //  ELIMINAR INSCRIPCIÓN
     // ==========================================
     const modalEliminar = document.getElementById("modalEliminar");
     if (modalEliminar) {

@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // ==========================================
-    // CRUD: CREAR
+    // ADD
     // ==========================================
     if (formCrear) {
         formCrear.addEventListener("submit", async (e) => {
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // ==========================================
-    // CRUD: EDITAR
+    // EDIT
     // ==========================================
     const modalEditar = document.getElementById("modalEditar");
     if (modalEditar) {
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // ==========================================
-    // CRUD: ELIMINAR (Soft Delete)
+    // DELETE (Soft Delete)
     // ==========================================
     const modalEliminar = document.getElementById("modalEliminar");
     if (modalEliminar) {
